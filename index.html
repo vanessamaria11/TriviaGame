@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Trivia Game</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 <link rel="stylesheet" href="">
 <link rel="stylesheet" href="">
@@ -12,61 +13,71 @@
 	<h1 id="header">Totally Trivial Trivia </h1>
 </header>
 <body>
+	<button id ="start"><h2>Start</h2></button>
+	<h3><div id="display-time"></div></h3>
 
-      <button id ="start"><h2>Start</h2></button>
-   
-<div id="showtime">
-<div id="question1-holder"></div>
-	<button id="question1-choiceA" class="question1choices" class="wrong1"></button>
-	<button id="question1-choiceB" class="question1choices" class="wrong1"></button>
-	<button id="question1-choiceC" class="question1choices" class="wrong1"></button>
-	<button id="question1-choiceD" class="question1choices" class="wrong1"></button>
-	<button id="question1-choiceE" class="question1choices" id="correct1"></button>
-<div id="question2-holder"></div>
-	<button id="question2-choiceA" class="question2choices" class="wrong2"></button>
-	<button id="question2-choiceB" class="question2choices" id="correct2"></button>
-	<button id="question2-choiceC" class="question2choices" class="wrong2"></button>
-	<button id="question2-choiceD" class="question2choices" class="wrong2"></button>
+<div class = "col-md-2 col-lg-2 col-xl-2"></div>
+<div class = "col-md-10 col-lg-10 col-xl-10">
+<div id="form">
+<form action="" id="trivia-form">
+	
+</form>
 </div>
-	<div id="question2-choices"></div>
-<div id="question3-holder"></div>
-	<div id="question3-choices"></div>
-<div id="question4-holder"></div>
-	<div id="question4-choices"></div>
-<div id="question5-holder"></div>
-	<div id="question5-answers"></div>
-<div id="score"></div>
-<div id="display"></div>
+</div>
+<div class = "col-md-2 col-lg-2 col-xl-2"></div>
+<br>
+<div class ="col-md-4 col-lg-4 col-xl-4"></div>
+<div class ="col-md-8 col-lg-8 col-xl-8">
+<button id="submit"><h4>Submit</h4></button>
+<br>
+<button id="restart"><h4>Play Again</h4></button>
+</div>
+<!-- <div class ="col-md-4 col-lg-4 col-xl-4"></div> -->
 
-<button id ="submit"><h2>Submit</h2></button>
-
-<!-- <div id="QuestionAnswerHolder">
-	<div id="question1">Which of the following is not part of the five boroughs of New York City?
-		<div id="choices1">
-			<div class="row">
-			<span class="input-group-btn">
-        		<button class="btn btn-default" type="button">Manhattan</button>
-        		<button class="btn btn-default" type="button">The Bronx</button>
-        		<button class="btn btn-default" type="button">Queens</button>
-        		<button class="btn btn-default" type="button">Staten Island</button>
-        		<button class="btn btn-default" type="button">Long Island</button>
-      		</span>
-			</div>
-		</div>
-		</div>
-	<div id="question2"></div>
-		<div id="choices2"></div>
-	<div id="question3"></div>
-		<div id="choices3"></div>
-	<div id="question4"></div>
-		<div id="choices4"></div>
-	<div id="question5"></div>
-		<div id="choices5"></div>
-</div> -->
-
+<br>
 
 <footer>
+<div class="container">
+<div id="tallyright"></div>
+<div id="tallywrong"></div>
+</div>
+</footer>
 
+<script src="assets/javascript/app.js"></script>
+</body>
+</html>
+<header>
+	<h1 id="header">Totally Trivial Trivia </h1>
+</header>
+<body>
+	<button id ="start"><h2>Start</h2></button>
+	<h3><div id="display-time"></div></h3>
+
+<div class = "col-md-2 col-lg-2 col-xl-2"></div>
+<div class = "col-md-10 col-lg-10 col-xl-10">
+<div id="form">
+<form action="" id="trivia-form">
+	
+</form>
+</div>
+</div>
+<div class = "col-md-2 col-lg-2 col-xl-2"></div>
+<br>
+<div class ="col-md-4 col-lg-4 col-xl-4"></div>
+<div class ="col-md-8 col-lg-8 col-xl-8">
+<button id="submit"><h4>Submit</h4></button>
+<br>
+<button id="restart"><h4>Play Again</h4></button>
+</div>
+<!-- <div class ="col-md-4 col-lg-4 col-xl-4"></div> -->
+
+<br>
+
+<footer>
+<div class="container">
+<div id="tallyright"></div>
+<div id="tallywrong"></div>
+</div>
 </footer>
 
 <script src="assets/javascript/app.js"></script>
