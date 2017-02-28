@@ -1,276 +1,230 @@
-//PseudoCode:
-//Load start button when you get to the page, hiding all elements on the page
-//When the start button is clicked, reveal questions and choices with prospective buttons
-//and start timer
-//when timer is finished, save user clicked answers and calculate the incorrect and correct answers
-//assign classes to the wrong answers, and id to the right ones. 
-
-var question1Answer;
-var question2Answer;
-var incorrect;
+$("#submit").hide();
+$("#restart").hide();
+var tallycorrect=0;
+var tallyincorrect=0;
 var timer=120;
 var countdown;
-var points=0;
-var rightChoice=1;
-
-window.onload = function() {
-
-$("#submit").hide();
-$(".question1choices").hide();
-$(".question2choices").hide();
-// $("#start").click(game.start)
-$("#display").hide();
-$("#score").hide();
+$("#qc").hide();
+$("#qw").hide();
+//clue: function to create circuit timers or "smart interval timers"
+function createCircuitTimer(timeInterval){
+	return {
+		time: timeInterval
+		, interval: null
+		, rotation: 0
+		, running: false
+		, start: function(callMe){
+			//clue: remember the booleans!!!
+			if(this.running !== true){
+				this.interval = setInterval(callMe, this.time);
+				this.running = true;
+			}
+		}
+		, stop: function(){
+			//clue: remember the booleans!!!
+			if(this.running === true){
+				clearInterval(this.interval);
+				this.running = false;
+			}
+		}
+	};
 };
-// var game =
-// {
 
-	$("#start").on('click', function()
-	{
-	$("#question1-holder").html("Which of the following is not part of the five boroughs of New York City?");
-	$("#question1-choiceA").html("Manhattan");
-	$("#question1-choiceB").html("The Bronx");
-	$("#question1-choiceC").html("Queens");
-	$("#question1-choiceD").html("Staten Island");
-	$("#question1-choiceE").html("Long Island");
-	$("#question2-holder").html("In what state is the Statue of Liberty located?");
-	$("#question2-choiceA").html("Connecticut");
-	$("#question2-choiceB").html("New Jersey");
-	$("#question2-choiceC").html("New York");
-	$("#question2-choiceD").html("New Hampshire");
-	$(".question1choices").show();
-	$(".question2choices").show();
-	$("#display").show();
-	stopwatch();
-	countdown = setInterval(stopwatch, 1000);
-	$("#start").hide();
-	$("#score").hide();
-	$("#submit").show();
+
+var circuitTimer=createCircuitTimer(1000);
+
+var trivia=[
+{
+	question: "Which of the following is not part of the five boroughs of New York City?"
+	,choices:["Manhattan", "The Bronx","Queens","Staten Island", "Long Island"]
+	,correctanswer:4
+	,chosenanswer:-1
+},
+{
+	question: "In what state is the Statue of Liberty located?"
+	,choices:["Connecticut", "New Jersey","New York","New Hampshire"]
+	,correctanswer:1
+	,chosenanswer:-1
+},
+{
+	question: "Which of the following artists is a New Jersey native?"
+	,choices:["Beyonce", "Dolly Parton","Rick James","Bruce Springsteen"]
+	,correctanswer:3
+	,chosenanswer:-1
+},
+{
+	question: "True or False? Atlantic City has the longest boardwalk in the entire world"
+	,choices:["True", "False"]
+	,correctanswer:0
+	,chosenanswer:-1
+},
+{
+	question: "New Jersey has the most _____ in the world."
+	,choices:["boardwalks", "pizza parlors","diners","counties"]
+	,correctanswer:2
+	,chosenanswer:-1
+},
+{
+	question: "Thanks to this state salt water taffy:"
+	,choices:["California", "Delaware","New Jersey","North Carolina"]
+	,correctanswer:2
+	,chosenanswer:-1
+},
+{
+	question: "Which of the following, first found in North America, first found in New Jersey?"
+	,choices:["mummy", "a giant skeleton","lochness monster","dinosaur skeleton"]
+	,correctanswer:3
+	,chosenanswer:-1
+},
+
+];
+var start = function(){
+	$('#trivia-form').empty();
+	for (var i=0; i<trivia.length; i++){
+		// console.log($("#trivia-form"));
+		$("#trivia-form").append("<label>"+trivia[i].question+"</label><br>");
+		for (var j=0; j<trivia[i].choices.length; j++){
+			console.log(i+","+j+","+trivia[i]);
+			if (j===trivia[i].correctanswer){
+			$("#trivia-form").append('<input type="radio" name="question'+i+'" value="correct">'+trivia[i].choices[j]+'<br>');
+			}
+			else{	
+			$("#trivia-form").append('<input type="radio" name="question'+i+'" value="incorrect">'+trivia[i].choices[j]+'<br>');
+			}	
+			//$("trivia-form").show(trivia.question);
+		}
+		console.log(trivia[i].question);
+	}
+	//stopwatch();
+	//countdown=setInterval(stopwatch,1000);
+	circuitTimer.start(function(){
+		timer--;
+		$("#display-time").html(timer);
+		if(timer <= 0){
+			circuitTimer.stop();
+			alert("Time's Up");
+			submitAnswers();
+		}
 	});
+	$("#start").hide();
+	$("#submit").show();
+	$("#submit").on('click', function(){
+		
+		submitAnswers();
+	});
+	//stopwatch();
+	//countdown=setInterval(stopwatch,1000);
+	$("#restart").show();
 
+}
+
+$("#start").on('click', start);
+
+var submitAnswers = function()
+{	tallycorrect=0;
+	tallyincorrect=0;
+    var radioValue = $("input[name='question0']:checked").val();
+	console.log(radioValue);
+	for (var i=0; i<trivia.length; i++){
+		if ( $("input[name='question"+i+"']:checked").val()==="correct")
+		{
+			console.log(true)
+			tallycorrect++;
+		}
+		else
+		{
+			tallyincorrect++;
+		}
+	}
+	$(".container").show();
+	$("#tallyright").html("Questions correct: "+tallycorrect);
+	$("#tallywrong").html("Questions incorrect: "+tallyincorrect);
+	$("#tallyright").show();
+	$("#tallywrong").show();
+	circuitTimer.stop();
+	//reallystop();
+	$("#qc").show();
+	$("#qw").show();
+};
+/*
 var stopwatch = function()
 {
 	timer--;
-	
-	$("#display").html(timer);
+
+	$("#display-time").html(timer);
 
 	stop();
 };
 
+var stop = function(){
+	if (timer ===0){
+	clearInterval(countdown)
+	alert("Times Up!");
+	$("#display-time").hide();
+	$("#trivia-form").hide();
+	submitAnswers();
+	}
 
-var stop = function()
-	{
-		if (timer===0){
-			clearInterval(countdown);
-			alert("Times Up!");
-			$("#display").hide();
-		}
-		
-	};
+};
+var reallystop = function(){
+	clearInterval(countdown);
+	timer=10;
 
+};*/
 
-var correctclick = function()
-	{
-		$("#correct1").on('click');
-		changepoints();
-	};
+$("#restart").on('click', function(){
+$("input[type=radio]").prop("checked",false);
+	tallycorrect=0;
+	tallyincorrect=0;
+	timer=120;
+	$("#tallyright").html("0");
+	$("#tallywrong").html("0");
+	$("#tallyright").hide();
+	$("#tallywrong").hide();
+	start();
+	$("#trivia-form").show();
+	$("#qc").hide();
+	$("#qw").hide();
 
-var changepoints = function()
+});
+/*
+var stopwatch = function()
 {
-	return ++points;
+	timer--;
+
+	$("#display-time").html(timer);
+
+	stop();
 };
 
-// var combinethetwo = function()
-// {
+var stop = function(){
+	if (timer ===0){
+	clearInterval(countdown)
+	alert("Times Up!");
+	$("#display-time").hide();
+	$("#trivia-form").hide();
+	submitAnswers();
+	}
 
-// }
+};
+var reallystop = function(){
+	clearInterval(countdown);
+	timer=10;
 
-$("#submit").on('click', function()
-	{
-	// $("#question1-holder").hide;
-	$("#showtime").hide();
-	$("#score").show();
-	$("#score").html(changepoints);
-	$("#submit").hide();
-	});
+};*/
 
+$("#restart").on('click', function(){
+$("input[type=radio]").prop("checked",false);
+	tallycorrect=0;
+	tallyincorrect=0;
+	timer=120;
+	$("#tallyright").html("0");
+	$("#tallywrong").html("0");
+	$("#tallyright").hide();
+	$("#tallywrong").hide();
+	start();
+	$("#trivia-form").show();
+	$("#qc").hide();
+	$("#qw").hide();
 
-	// 	if ($("#correct1").on('click')){
-	// 	points++;
-	// 	$("#score").html(points)
-	// // }
-	// };
-
-// var points = function()
-// 	{
-
-// 	}
-
-//stop();
-
-	
-// var stopwatch = {
-// 	time: 0,
-
-// reset: function(){
-// 	stopwatch.time = 0;
-// 	$
-// }
-// 	start: function(){
-// 		t=setInterval(
-// 			function()
-// 				{stopwatch.time=stopwatch.time+1;
-// 				}, 1000
-// 			);
-// 	}
-// };
-// var countdown;
-
-// var question1choices= ["Manhattan", "the Bronx", "Queens", "Staten Island", "Long Island"];
-	// time: 0,
-	// Counting: function(){
-	// showtime++;
-	// $("#showtime").html(stopwatch.start);
-
-	// },
-// $(".btn btn-default").click(correctIncorrect.right){
-
-// };
-
-// 	var correctIncorrect=
-// 	{
-// 	right: function()
-// 	{
-
-// 	}
-// 	}
-
-// 	}
-	
-
-// 	}
-
-
-
-	// <button onclick="document.getElementById('myImage').src='pic_bulbon.gif'">Turn on the light</button>
-
-	// document.getElementById("question1-choiceD").onclick=function(correct)
-	// 	var markCorrect=0;
-	// 	question1Answer="Staten Island";
-	// 	question2Answer="New Jersey";
-	// 	document.getElementById("question1-choiceD").onclick = function(correct){
-	// 		if (correct){
-	// 			markCorrect++
-	// 		}
-	// 	} 
-
-// {
-	// 	// var question1choices=["Manhattan","the Bronx", "Queens", "Staten Island", "Long Island"],	
-	// 	var correct1;
-	// 	var correct2;
-	// 	var userClick=[];
-
-	// 	correctchoice1=question1choices[4];
-	// 	$()
-// <div id="QuestionAnswerHolder">
-// 	<div id="question1">Which of the following is not part of the five boroughs of New York City?
-// 		<div id="choices1">
-// 			<div class="row">
-// 			<span class="input-group-btn">
-//         		<button class="btn btn-default" type="button">Manhattan</button>
-//         		<button class="btn btn-default" type="button">The Bronx</button>
-//         		<button class="btn btn-default" type="button">Queens</button>
-//         		<button class="btn btn-default" type="button">Staten Island</button>
-//         		<button class="btn btn-default" type="button">Long Island</button>
-//       		</span>
-// 			</div>
-// 		</div>
-// 		</div>
-// 	<div id="question2"></div>
-// 		<div id="choices2"></div>
-// 	<div id="question3"></div>
-// 		<div id="choices3"></div>
-// 	<div id="question4"></div>
-// 		<div id="choices4"></div>
-// 	<div id="question5"></div>
-// 		<div id="choices5"></div>
-// </div>
-
-
-// var questions=
-// {
-// 	Question1: 
-// 	{
-// 		question:["Which of the following is not part of the five boroughs of New York City?"],
-// 		choices: ["Manhattan","the Bronx", "Queens", "Staten Island", "Long Island"],
-// 	},
-
-// };
-
-// function showQuestions()
-// {
-// question-holder.innerhtml = questions;
-// }
-
-// showQuestions();
-
-// // $()
-// // 		var answer1=questions.Question1.choices[4]
-// 	// {
-// 	// question: "In what state is the Statue of Liberty located?",
-// 	// choices: "Connecticut", "New Jersey", "New York", "New Hampshire",
-// 	// answer: "New Jersey"
-// 	// },
-
-// 	// {
-// 	// question:"Atlantic City has the longest boardwalk in the world."
-// 	// choices: "True", "False",
-// 	// answer: "True"
-// 	// },
-// // ];
-// // };
-
-
-// document.getElementById("showquestions").on("click",function()
-// 	{
-// 	var questions=
-// 	{
-// 	Question1: 
-// 	{
-// 		question:["Which of the following is not part of the five boroughs of New York City?"],
-// 		choices: ["Manhattan","the Bronx", "Queens", "Staten Island", "Long Island"],
-// 	},
-// 	};
-// 	}
-// 	innerhtml= questions;
-
-
-// function questionTimer()
-// {
-// $("#QuestionAnswerHolder").html("")
-// };
-
-// function onClick()
-// {
-
-// };
-
-// function revealQuestions()
-// {
-// 	showQuestions=setInterval(function, 120)
-// };
-
-
-
-
-	// {
-	// question:
-	// choices:
-	// answer:
-	// },
-
-	// {
-	// question:
-	// choices:
-	// answer:
-	// },
+});
